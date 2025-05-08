@@ -99,7 +99,7 @@ function generateMemo() {
       return;
     }
   
-    const payments = window.Square.payments('sandbox-sq0idb-Wxe_ATUmje7sHXMCfPyZfw', 'LNCJT5NTH3KNV'); // ✅ PRODUCTION
+    const payments = window.Square.payments('sandbox-sq0idb-Wxe_ATUmje7sHXMCfPyZfw', 'LNCJT5NTH3KNV');
   
     const paymentRequest = payments.paymentRequest({
       countryCode: 'US',
