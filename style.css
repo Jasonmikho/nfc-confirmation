@@ -1,0 +1,99 @@
+body {
+    font-family: sans-serif;
+    margin: 0;
+    background: #f2f2f2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+  
+  .container {
+    background: white;
+    padding: 30px;
+    border-radius: 10px;
+    width: 90%;
+    max-width: 400px;
+    text-align: center;
+    box-shadow: 0 0 15px rgba(0,0,0,0.1);
+  }
+  
+  h1, h2 {
+    margin-bottom: 10px;
+  }
+  
+  button {
+    margin-top: 20px;
+    padding: 12px 20px;
+    border: none;
+    background: #0077cc;
+    color: white;
+    font-size: 1em;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+  
+  button:hover {
+    background: #005fa3;
+  }
+
+  .spinner {
+    margin: 20px auto;
+    width: 40px;
+    height: 40px;
+    border: 5px solid #ccc;
+    border-top-color: #0077cc;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+  }
+  
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+
+  .steps {
+    margin-top: 20px;
+    text-align: left;
+  }
+  
+  .step {
+    margin-bottom: 20px;
+    background: #f0f4ff;
+    padding: 15px;
+    border-radius: 8px;
+  }
+  
+  .highlight {
+    font-size: 1.1em;
+    font-weight: bold;
+    color: #333;
+    display: inline-block;
+    margin-top: 5px;
+  }
+  
+  .primary-btn {
+    margin-top: 20px;
+    padding: 15px 30px;
+    font-size: 1.1em;
+    background-color: #0077cc;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+  
+  .secondary-btn {
+    margin-top: 10px;
+    padding: 10px 20px;
+    background: #eee;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+  
+  .note {
+    font-size: 0.9em;
+    color: #666;
+    margin-top: 10px;
+  }
+  

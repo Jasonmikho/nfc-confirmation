@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Upload Receipt</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <h2>Payment Not Found</h2>
+    <p>You can retry or upload your receipt here:</p>
+    <form action="/upload-receipt" method="POST" enctype="multipart/form-data">
+      <input type="file" name="receipt" required>
+      <input type="hidden" id="memoInput" name="memo">
+      <button type="submit">Upload</button>
+    </form>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
