@@ -67,7 +67,7 @@ let postSent = false;
   postSent = true;
   const method = window.location.pathname.includes("cashapp") ? "cashapp" : "venmo";
   try {
-    await fetch("https://3e22-2601-410-8680-a340-6ce8-63e2-b1d7-9be2.ngrok-free.app/start-payment", {
+    await fetch("https://nfc-confirmation.onrender.com/start-payment", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ memo, method, amount: "0.01" })
@@ -90,7 +90,7 @@ let postSent = false;
   
     const poll = setInterval(async () => {
       try {
-        const res = await fetch(`https://3e22-2601-410-8680-a340-6ce8-63e2-b1d7-9be2.ngrok-free.app/check-payment?memo=${memo}`);
+        const res = await fetch(`https://nfc-confirmation.onrender.com/check-payment?memo=${memo}`);
         const { confirmed } = await res.json();
   
         if (confirmed) {
