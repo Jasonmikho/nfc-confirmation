@@ -38,8 +38,8 @@ app.post('/start-payment', (req, res) => {
 
 // === POST /parse-email (Mailgun webhook) ===
 app.post('/parse-email', (req, res) => {
-  console.log('📩 /parse-email HIT');
-  console.log('🔍 Request body keys:', Object.keys(req.body));
+//   console.log('📩 /parse-email HIT');
+//   console.log('🔍 Request body keys:', Object.keys(req.body));
 
   // Mailgun sends the plain body in 'body-plain' or 'stripped-text'
   const raw = req.body['body-plain'] || req.body['stripped-text'];
@@ -70,5 +70,5 @@ app.post('/parse-email', (req, res) => {
 
 // Start server
 app.listen(PORT, () => {
-  console.log(`✅ Server running on http://localhost:${PORT}`);
+  console.log(`✅ Server running on Render (port ${PORT})`);
 });
