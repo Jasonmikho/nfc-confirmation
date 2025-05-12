@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Pay with Cash App</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <h2>💸 Complete Your Payment with Cash App</h2>
+    <p>Just tap the button below — everything is pre-filled.</p>
+
+    <div class="steps">
+      <div class="step">
+        <strong>Pay:</strong><br>
+        <span class="highlight">$yourcashtag</span> <!-- Replace with real $cashtag -->
+      </div>
+      <div class="step">
+        <strong>Amount:</strong><br>
+        <span class="highlight">$0.01</span>
+      </div>
+      <div class="step">
+        <strong>Memo (copied):</strong><br>
+        <span id="memo" class="highlight"></span>
+        <button onclick="copyMemo()" class="secondary-btn">Copy Again</button>
+      </div>
+    </div>
+
+    <button onclick="openCashApp()" class="primary-btn">Open Cash App</button>
+    <p class="note">If nothing happens, open Cash App manually and paste the memo.</p>
+
+    <button onclick="goToPolling()" class="primary-btn" style="margin-top: 30px;">I’ve Paid</button>
+  </div>
+
+  <script src="script.js"></script>
+  <script>
+    setMemoInView();
+  
+    function triggerCopyOnce() {
+      copyMemo();
+      window.removeEventListener('click', triggerCopyOnce);
+      window.removeEventListener('touchstart', triggerCopyOnce);
+    }
+  
+    // Wait for first user gesture
+    window.addEventListener('click', triggerCopyOnce);
+    window.addEventListener('touchstart', triggerCopyOnce);
+  </script>
+</body>
+</html>

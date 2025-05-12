@@ -1,0 +1,38 @@
+# === Node dependencies ===
+node_modules/
+
+# === Output / build directories ===
+dist/
+output/
+build/
+
+# === Logs ===
+*.log
+npm-debug.log*
+
+# === Environment variables ===
+.env
+.env.*
+
+# === ngrok files ===
+*.ngrok.*
+
+# === macOS system junk ===
+.DS_Store
+
+# === Windows system junk ===
+Thumbs.db
+
+# === IDE/editor folders ===
+.vscode/
+.idea/
+
+# === Coverage / testing ===
+coverage/
+
+# === Temporary files ===
+*.tmp
+*.swp
+
+# === OS-specific metadata ===
+*.orig
