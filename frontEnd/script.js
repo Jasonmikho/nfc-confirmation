@@ -30,10 +30,29 @@ function generateMemo() {
     });
   }
   
-  function goToPolling() {
-    const memo = getMemo();
-    window.location.href = `poll.html?memo=${memo}`;
-  }
+function goToPolling() {
+  const memo = getMemo();
+  const method = window.location.pathname.includes("cashapp") ? "cashapp" : "venmo";
+  const statusEl = document.getElementById('status');
+  const spinner = document.getElementById('spinner');
+
+  if (statusEl) statusEl.textContent = 'Checking for payment...';
+  if (spinner) spinner.style.display = 'block';
+
+  fetch("https://nfc-confirmation.onrender.com/start-payment", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ memo, method, amount: "0.01" })
+  })
+    .then(res => res.text())
+    .then(text => {
+      console.log("✅ Payment registered:", text);
+      pollForMemo();
+    })
+    .catch(err => {
+      console.error("❌ Error starting payment:", err);
+    });
+}
   
   function openVenmo() {
     const memo = getMemo();
@@ -60,55 +79,75 @@ function generateMemo() {
     if (input) input.value = memo;
   }
 
-let postSent = false;
-(async () => {
+async function registerAndPoll() {
   const memo = getMemo();
-  if (postSent) return;
-  postSent = true;
   const method = window.location.pathname.includes("cashapp") ? "cashapp" : "venmo";
+  console.log("🔸 registerAndPoll() triggered");
+  console.log("Memo:", memo, "| Method:", method);
+
   try {
-    await fetch("https://nfc-confirmation.onrender.com/start-payment", {
+    const res = await fetch("https://nfc-confirmation.onrender.com/start-payment", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ memo, method, amount: "0.01" })
     });
-    console.log("Payment intent registered with backend:", memo);
+    const text = await res.text(); // In case server doesn't return JSON
+    console.log("✅ start-payment response:", text);
+
+    const statusEl = document.getElementById('status');
+if (statusEl) statusEl.textContent = 'Checking for payment...';
+const spinner = document.getElementById('spinner');
+if (spinner) spinner.style.display = 'block';
+
+pollForMemo();
+
   } catch (err) {
-    console.error("Failed to register payment intent:", err);
+    console.error("❌ registerAndPoll() failed:", err);
   }
-})();
+}
+
+function goToPolling() {
+  registerAndPoll();
+}
   
   // === Polling logic (used on polling page) ===
   async function pollForMemo() {
-    const memo = getMemo();
-    const statusEl = document.getElementById('status');
-    const spinner = document.getElementById('spinner');
-    if (!memo || !statusEl) return;
-  
-    let attempts = 0;
-    const maxAttempts = 12;
-  
-    const poll = setInterval(async () => {
-      try {
-        const res = await fetch(`https://nfc-confirmation.onrender.com/check-payment?memo=${memo}`);
-        const { confirmed } = await res.json();
-  
-        if (confirmed) {
-          clearInterval(poll);
-          window.location.href = 'payment-success.html?memo=' + memo;
-        } else if (++attempts >= maxAttempts) {
-          clearInterval(poll);
-          window.location.href = 'payment-failed.html?memo=' + memo;
-        } else {
-          statusEl.textContent = `Still checking... (${attempts} of ${maxAttempts})`;
-        }
-      } catch (err) {
+  const memo = getMemo();
+  const statusEl = document.getElementById('status');
+  const spinner = document.getElementById('spinner');
+  if (!memo || !statusEl) return;
+
+  console.log("🔁 pollForMemo() starting for memo:", memo);
+
+  let attempts = 0;
+  const maxAttempts = 12;
+
+  const poll = setInterval(async () => {
+    try {
+      console.log(`⏳ Attempt ${attempts + 1}: checking ${memo}`);
+      const res = await fetch(`https://nfc-confirmation.onrender.com/check-payment?memo=${memo}`);
+      const data = await res.json();
+      console.log("📩 poll result:", data);
+
+      if (data.confirmed) {
+        console.log("✅ Payment confirmed. Redirecting...");
         clearInterval(poll);
-        statusEl.textContent = 'Something went wrong. Try again later.';
-        spinner.style.display = 'none';
+        window.location.href = `payment-success.html?memo=${memo}`;
+      } else if (++attempts >= maxAttempts) {
+        console.warn("⚠️ Max attempts reached. Redirecting to failure.");
+        clearInterval(poll);
+        window.location.href = `payment-failed.html?memo=${memo}`;
+      } else {
+        statusEl.textContent = `Still checking... (${attempts} of ${maxAttempts})`;
       }
-    }, 5000);
-  }
+    } catch (err) {
+      console.error("❌ Error during polling:", err);
+      clearInterval(poll);
+      statusEl.textContent = 'Something went wrong. Try again later.';
+      if (spinner) spinner.style.display = 'none';
+    }
+  }, 5000);
+}
   
   // === Cash App Open ===
   function openCashApp() {

@@ -28,6 +28,11 @@ app.post('/start-payment', (req, res) => {
   const { memo, method } = req.body;
   if (!memo || !method) return res.status(400).json({ ok: false });
 
+  const existing = db.findByMemo(memo);
+  if (existing) {
+    return res.json({ ok: true, message: 'Already registered' });
+  }
+
   try {
     db.addPayment(memo, method);
     res.json({ ok: true });
